@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!-- saved from url=(0033)https://share.streamlit.io/deploy -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width,initial-scale=1,shrink-to-fit=no,user-scalable=no">
+    <meta name="theme-color" content="#FFFFFF">
+    <!-- Additional meta tags -->
+
+    <!--
+      We're putting icons here because ReactHelmet doesn't work for favicons.
+      See https://github.com/nfl/react-helmet/issues/430
+    -->
+
+    <!--
+    Following a mix of:
+    - https://medium.com/swlh/are-you-using-svg-favicons-yet-a-guide-for-modern-browsers-836a6aace3df
+    - https://css-tricks.com/svg-favicons-and-all-the-fun-things-we-can-do-with-them/
+    -->
+    
+    <!--
+    Including all these other <link> statements here just so they're all in the same place.
+    Not because we expect someone to Helmet-override them.
+    -->
+    
+    <link rel="mask-icon" href="https://share.streamlit.io/favicon_safari_mask.png" color="#FF2B2B">
+    <link rel="apple-touch-icon" href="https://share.streamlit.io/-/build/favicon_256.png">
+    <link rel="manifest" href="https://share.streamlit.io/-/build/manifest.json">
+    <!-- Google Tag Manager -->
+    <script type="text/javascript" async="" src="./Deploy an app · Streamlit_files/analytics.min.js.download"></script><script async="" src="./Deploy an app · Streamlit_files/gtm.js.download"></script><script>
+      (function (w, d, s, l, i) {
+        w[l] = w[l] || [];
+        w[l].push({
+          "gtm.start": new Date().getTime(),
+          event: "gtm.js",
+        });
+        var f = d.getElementsByTagName(s)[0],
+          j = d.createElement(s),
+          dl = l != "dataLayer" ? "&l=" + l : "";
+        j.async = true;
+        j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        f.parentNode.insertBefore(j, f);
+      })(window, document, "script", "dataLayer", "GTM-52GRQSL");
+    </script>
+    <!-- End Google Tag Manager -->
+    <!-- Segment -->
+    <script>
+      !(function () {
+        var analytics = (window.analytics = window.analytics || []);
+        if (!analytics.initialize)
+          if (analytics.invoked)
+            window.console && console.error && console.error("Segment snippet included twice.");
+          else {
+            analytics.invoked = !0;
+            analytics.methods = [
+              "trackSubmit",
+              "trackClick",
+              "trackLink",
+              "trackForm",
+              "pageview",
+              "identify",
+              "reset",
+              "group",
+              "track",
+              "ready",
+              "alias",
+              "debug",
+              "page",
+              "once",
+              "off",
+              "on",
+              "addSourceMiddleware",
+              "addIntegrationMiddleware",
+              "setAnonymousId",
+              "addDestinationMiddleware",
+            ];
+            analytics.factory = function (e) {
+              return function () {
+                var t = Array.prototype.slice.call(arguments);
+                t.unshift(e);
+                analytics.push(t);
+                return analytics;
+              };
+            };
+            for (var e = 0; e < analytics.methods.length; e++) {
+              var key = analytics.methods[e];
+              analytics[key] = analytics.factory(key);
+            }
+            analytics.load = function (key, e) {
+              var t = document.createElement("script");
+              t.type = "text/javascript";
+              t.async = !0;
+              t.src = "https://cdn.segment.com/analytics.js/v1/" + key + "/analytics.min.js";
+              var n = document.getElementsByTagName("script")[0];
+              n.parentNode.insertBefore(t, n);
+              analytics._loadOptions = e;
+            };
+            analytics.SNIPPET_VERSION = "4.13.1";
+            analytics.load("GI7vYWHNmWwHbyFjBrvL0jOBA1TpZOXC");
+            // analytics.page()
+          }
+      })();
+    </script>
+    <!-- End Segment -->
+    <script type="module" crossorigin="" src="./Deploy an app · Streamlit_files/index-COnpW_59.js.download"></script>
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/rolldown-runtime-CNC7AqOf.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/jsx-runtime-BtyjnKZj.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/cn-BZAAGw-p.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/routes-CSGpNduz.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/bufferedData-ymD0tp_Q.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/schemas-CsKhgDFl.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/tooltip-DmtfnmdT.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/snowflakeOAuth-CZscU77q.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/page-Al0RVqJC.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/index.module-Bbot1wPI.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/esm-CXhqkufa.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/errorDetails-BoeL7g8o.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/emoji_u1f626-DA0aHyeW.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/errorPage-COYGM2TW.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/error-B1ReLWjn.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/CarouselOfStreamlitExampleApp-WHt6QRj6.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/SmallDivider-DuDZTfyp.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/login-DNPXNiEY.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/notFound-BoI3QWDJ.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/confirmationModal-BOsWCv_8.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/toNumber-D0RjNJYc.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/icon_analytics-CE5MjYW7.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/trim-yzKrW-as.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/popoverMenu-BlIhdTBl.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/isEqual-Ctd7G7xk.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/terminalContent-CGURstHr.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/CSSTransition-AnhMoI_S.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/useAppState-C67ktBD-.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/queryGithubRepository-DXxeIas3.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/streamlitAppContext-BB7rdvC6.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/toFinite-BW9Ru4Ym.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/icon_star_outline-DL_2fyLV.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/usePythonVersions-D56o3_Qn.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/appSettings-GDQPXLZu.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/useUserDetails-YXenulOS.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/banner-DNTp_Roh.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/icon_github-CfLfIzZH.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/icon_edit-DHRxkIDl.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/iframe-PlC_b34Z.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/ProfilePagePreview-VBYqXefU.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/states-CikkCnNP.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/streamlitAppPage-D1jvYl4B.js">
+    <link rel="modulepreload" crossorigin="" href="https://share.streamlit.io/-/build/assets/replayStats-C6TwcZID.js">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/schemas-Iu3KQOQJ.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/tooltip-D2S4___1.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/page-64Xl_BNC.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/errorDetails-BDQowOym.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/errorPage-CK-Jpwy3.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/CarouselOfStreamlitExampleApp-2FXfzJGp.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/SmallDivider-BlS60Rb-.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/login-CRVde-_5.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/notFound-BzJWtTwJ.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/confirmationModal-BwNoJBuP.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/popoverMenu-D49xGQkE.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/terminalContent-C2n1Mjw6.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/useAppState-BjTUZpyD.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/icon_star_outline-DH69RDEi.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/usePythonVersions-CBwCrTS9.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/appSettings-jOmLW4LG.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/banner-D2t2_Ovp.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/ProfilePagePreview-BWWUYPxS.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/states-8om4j6Tx.css">
+    <link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/index-L1R9zUDf.css">
+  <style media=""></style><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/onboardingFlow-Bvv2XpW7.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/inBrowserEditorLegalDisclaimerModal-poeoEVjJ.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/CortexCodeTrialOfferPage-CTROpOC-.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/icon_snowflake-CAJa5G26.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/warningInfo-Km6ObMnY.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/useAppTemplates-BXG4InHg.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/withAnalytics-BlweOfri.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/getTemplateScreenshot-Ctv9dgRx.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/path-BZRKZrmS.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/updateUserAppVisibilityInProfilePage-BTT9kC39.js"><link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/onboardingFlow-B6qxlTRP.css"><title>Deploy an app · Streamlit</title><script src="./Deploy an app · Streamlit_files/forms2.min.js.download" async=""></script><script src="./Deploy an app · Streamlit_files/forms2.min.js.download" async=""></script><script src="./Deploy an app · Streamlit_files/forms2.min.js.download" async=""></script><link id="mktoForms2BaseStyle" rel="stylesheet" type="text/css" href="./Deploy an app · Streamlit_files/forms2.css" nonce=""><link id="mktoForms2ThemeStyle" rel="stylesheet" type="text/css" href="./Deploy an app · Streamlit_files/forms2-theme-plain.css" nonce=""><style>/* Add your custom CSS below */
+.mktoButton
+      {	
+  		  border-radius: 5px;
+          border: #5C83E1 !important;
+          outline: none;
+          color: #ffffff;
+          padding: 8px 16px !important;
+          font-family: 'Source Sans Pro', sans-serif;
+          font-weight:700 !important;
+  		  font-size: 14px !important;
+      }
+      .mktoLabel
+      {
+          margin-bottom: 5px !important;
+          font-family: Arial !important;
+      }
+      .mktoAsterix
+      {
+          color: #fa0 !important;
+  		display:none !important;
+        float:left !important;
+      }
+	  .mktoGutter
+      {
+          display:none !important;
+      }
+      .mktoField
+      {
+          border: 1px solid #cdcdcd !important;
+        outline: none !important;
+        height: 43px !important;
+        line-height: normal !important;
+        -webkit-box-sizing: border-box !important;
+        -moz-box-sizing: border-box !important;
+        box-sizing: border-box !important;
+        padding: 12px 8px !important;
+        vertical-align: baseline !important;
+        font-size: 14px !important;
+        font-family: 'Open Sans',sans-serif !important;
+        font-weight: normal !important;
+        color: rgb(34, 34, 34) !important;
+        -webkit-border-radius: 5px !important;
+        border-radius: 5px !important;
+      }
+      .mktoFormRow
+      {
+          margin-bottom: 5px !important;
+      }
+      .mktoButtonWrap
+      {
+          
+      }
+	  .mktoFieldWrap
+      {
+          align-items: center;
+      }</style><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/newAppWizard-Bm-u6ObY.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/createLucideIcon-DjZNw73z.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/newAppWizard.module-DqDsOneF.js"><link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/newAppWizard-B39R19v4.css"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/deploy-DJFxhmry.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/deploy-CkO00WId.js"><link rel="modulepreload" as="script" crossorigin="" href="https://share.streamlit.io/-/build/assets/advancedSettingsLink-CujKWxdU.js"><link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/advancedSettingsLink-D4X4Ayny.css"><link rel="stylesheet" crossorigin="" href="./Deploy an app · Streamlit_files/deploy-C3Bv9Jtk.css"><link id="favicon" rel="icon" href="https://share.streamlit.io/-/build/favicon.svg"><link id="alternate-favicon" rel="alternate icon" href="https://share.streamlit.io/-/build/favicon.ico"></head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"><div class=""><div class="_wrapper_1e4cd_1"><header class="_header_cxedy_1"><button class="_navAction_cxedy_72" aria-label="sivacodez's account" aria-haspopup="true" aria-expanded="false"><img src="./Deploy an app · Streamlit_files/sivacodez.png" alt="Current workspace avatar"><div class="flex flex-row gap-4"><span class="_WorkspaceName_ub8lr_84">sivacodez</span><div class="flex flex-row gap-1 items-center"><svg xmlns="http://www.w3.org/2000/svg" width="10" height="6" viewBox="0 0 10 6" fill="none"><path d="M1.42708 0.500006L4.66042 3.73334L7.89375 0.500006C8.21875 0.175006 8.74375 0.175006 9.06875 0.500006C9.39375 0.825006 9.39375 1.35001 9.06875 1.67501L5.24375 5.50001C4.91875 5.82501 4.39375 5.82501 4.06875 5.50001L0.24375 1.67501C-0.08125 1.35001 -0.08125 0.825006 0.24375 0.500006C0.56875 0.183339 1.10208 0.175006 1.42708 0.500006Z" fill="#323232"></path></svg></div></div></button><nav class="_externalLinkNavigation_cxedy_196"><div class="_externalLinkList_cxedy_208"><a class="_externalLink_cxedy_144" href="https://share.streamlit.io/">My apps</a><a class="_externalLink_cxedy_144" href="https://share.streamlit.io/user/sivacodez">My profile</a><a class="_externalLink_cxedy_144" href="https://share.streamlit.io/explore">Explore</a><a href="https://discuss.streamlit.io/" target="_blank" rel="noopener noreferrer" class="_externalLink_cxedy_144 gap-2">Discuss<svg xmlns="http://www.w3.org/2000/svg" width="17" height="16" viewBox="0 0 17 16" fill="none" class="_iconAlert_cxedy_126"><g clip-path="url(#clip0_839_271)"><path d="M6.44448 3.99992C6.44448 4.37325 6.74448 4.66659 7.11115 4.66659H10.8378L3.57781 11.9266C3.31781 12.1866 3.31781 12.6066 3.57781 12.8666C3.83781 13.1266 4.25781 13.1266 4.51781 12.8666L11.7778 5.60659V9.33325C11.7778 9.69992 12.0778 9.99992 12.4445 9.99992C12.8111 9.99992 13.1111 9.69992 13.1111 9.33325V3.99992C13.1111 3.63325 12.8111 3.33325 12.4445 3.33325H7.11115C6.74448 3.33325 6.44448 3.63325 6.44448 3.99992Z" fill="#A3A8B8"></path></g><defs><clippath id="clip0_839_271"><rect width="16" height="16" fill="white" transform="translate(0.444458)"></rect></clippath></defs></svg></a></div></nav><div class="_openMenuButtonContainer_cxedy_168" aria-haspopup="true" aria-expanded="false"><button aria-label="Open menu" class="_openMenuButton_cxedy_168"><svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24" class="_menuIcon_cxedy_162"><path d="M0 0h24v24H0z" fill="none"></path><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"></path></svg></button></div></header><main class="container _pageContainer_1e4cd_10 _justifyCenter_1e4cd_21 mt-24 md:mt-40"><div class="_goBackWrapper_hr6lz_1"><a class="_link_ymhb9_1 _goBack_hr6lz_1" href="https://share.streamlit.io/deploy"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M16 7H3.83L9.42 1.41L8 0L0 8L8 16L9.41 14.59L3.83 9H16V7Z" fill="white"></path></svg>Back</a></div><div class="_wrapper_1gydo_5"><h2>Deploy an app</h2><form action="https://share.streamlit.io/deploy#" accept-charset="UTF-8" class="_deployForm_1i0n1_1"><div><div class="_labelContainer_qruan_1"><label for="repository"><div class="_label_1sx5f_1"><div>Repository &nbsp;</div><span id="bui26__anchor"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M7.99998 1.33325C4.31998 1.33325 1.33331 4.31992 1.33331 7.99992C1.33331 11.6799 4.31998 14.6666 7.99998 14.6666C11.68 14.6666 14.6666 11.6799 14.6666 7.99992C14.6666 4.31992 11.68 1.33325 7.99998 1.33325ZM7.99998 13.3333C5.05998 13.3333 2.66665 10.9399 2.66665 7.99992C2.66665 5.05992 5.05998 2.66659 7.99998 2.66659C10.94 2.66659 13.3333 5.05992 13.3333 7.99992C13.3333 10.9399 10.94 13.3333 7.99998 13.3333ZM7.33331 10.6666H8.66665V11.9999H7.33331V10.6666ZM8.40665 4.02659C7.03331 3.82659 5.81998 4.67325 5.45331 5.88659C5.33331 6.27325 5.62665 6.66659 6.03331 6.66659H6.16665C6.43998 6.66659 6.65998 6.47325 6.75331 6.21992C6.96665 5.62659 7.59998 5.21992 8.28665 5.36659C8.91998 5.49992 9.38665 6.11992 9.33331 6.76659C9.26665 7.65992 8.25331 7.85325 7.69998 8.68659C7.69998 8.69325 7.69331 8.69325 7.69331 8.69992C7.68665 8.71325 7.67998 8.71992 7.67331 8.73325C7.61331 8.83325 7.55331 8.94659 7.50665 9.06659C7.49998 9.08659 7.48665 9.09992 7.47998 9.11992C7.47331 9.13325 7.47331 9.14659 7.46665 9.16659C7.38665 9.39325 7.33331 9.66659 7.33331 9.99992H8.66665C8.66665 9.71992 8.73998 9.48659 8.85331 9.28659C8.86665 9.26659 8.87331 9.24659 8.88665 9.22659C8.93998 9.13325 9.00665 9.04659 9.07331 8.96659C9.07998 8.95992 9.08665 8.94659 9.09331 8.93992C9.15998 8.85992 9.23331 8.78659 9.31331 8.71325C9.95331 8.10659 10.82 7.61325 10.64 6.33992C10.48 5.17992 9.56665 4.19992 8.40665 4.02659V4.02659Z" fill="#BFC5D3"></path></svg></span></div></label><button type="button" class="_linkButton_4zrf9_1 _alignRight_qruan_7">Paste GitHub URL</button></div><div class=""><div aria-expanded="false" aria-haspopup="true" aria-owns="bui27val-listbox" role="combobox" class=""><div data-baseweb="input" class="st-bc st-b3 st-bd st-be st-bf st-bg st-bh st-bi st-aj st-ak st-al st-am st-bj st-bk st-bl st-bm st-bn st-bo st-bp st-bq st-br st-bs st-bt st-bu st-bv st-bw st-bx st-by st-bz st-c0"><div data-baseweb="base-input" class="st-b3 st-be st-c1 st-bk st-bl st-bq st-br st-bs st-bt st-c2 st-by"><input aria-autocomplete="list" aria-invalid="false" aria-required="false" autocomplete="off" id="repository" inputmode="text" name="repository" placeholder="sivacodez/repo" type="text" class="st-bc st-c3 st-c4 st-c5 st-c6 st-c7 st-c8 st-c9 st-ca st-cb st-cc st-be st-cd st-ce st-cf st-cg st-ch st-ci st-cj st-ck st-bq st-br st-bs st-bt st-c2 st-cl st-cm" value="SivaCodez/CyberTraceAI"></div></div></div></div></div><div><div class="_labelContainer_qruan_1"><label for="branch">Branch</label></div><div class=""><div aria-expanded="false" aria-haspopup="true" aria-owns="bui29val-listbox" role="combobox" class=""><div data-baseweb="input" class="st-bc st-b3 st-bd st-be st-bf st-bg st-bh st-bi st-aj st-ak st-al st-am st-bj st-bk st-bl st-bm st-bn st-bo st-bp st-bq st-br st-bs st-bt st-bu st-bv st-bw st-bx st-by st-bz st-c0"><div data-baseweb="base-input" class="st-b3 st-be st-c1 st-bk st-bl st-bq st-br st-bs st-bt st-c2 st-by"><input aria-autocomplete="list" aria-invalid="false" aria-required="false" autocomplete="off" id="branch" inputmode="text" name="branch" placeholder="main" type="text" class="st-bc st-c3 st-c4 st-c5 st-c6 st-c7 st-c8 st-c9 st-ca st-cb st-cc st-be st-cd st-ce st-cf st-cg st-ch st-ci st-cj st-ck st-bq st-br st-bs st-bt st-c2 st-cl st-cm" value="main"></div></div></div></div></div><div><div class="_labelContainer_qruan_1"><label for="mainModule">Main file path</label></div><div class=""><div aria-expanded="false" aria-haspopup="true" aria-owns="bui31val-listbox" role="combobox" class=""><div data-baseweb="input" class="st-bc st-b3 st-bd st-be st-bf st-bg st-bh st-bi st-aj st-ak st-al st-am st-bj st-bk st-bl st-bm st-bn st-bo st-bp st-bq st-br st-bs st-bt st-cu st-cv st-cw st-cx st-cy st-bz st-c0"><div data-baseweb="base-input" class="st-b3 st-be st-c1 st-bk st-bl st-bq st-br st-bs st-bt st-c2 st-cy"><input aria-autocomplete="list" aria-invalid="false" aria-required="false" autocomplete="off" id="mainModule" inputmode="text" name="mainModule" placeholder="foo/bar/streamlit_app.py" type="text" class="st-bc st-c3 st-c4 st-c5 st-c6 st-c7 st-c8 st-c9 st-ca st-cb st-cc st-be st-cd st-ce st-cf st-cg st-ch st-ci st-cj st-ck st-bq st-br st-bs st-bt st-c2 st-cl st-cm" value="app.py"></div></div></div></div></div><div><div class="st-b3 st-cn st-co"><label for="custom-subdomain-field">App URL (optional)</label></div><div data-baseweb="input" class="st-bc st-b3 st-bd st-be st-bf st-bg st-bh st-bi st-aj st-ak st-al st-am st-bj st-bk st-bl st-bm st-bn st-bo st-bp st-bq st-br st-bs st-bt st-bu st-bv st-bw st-bx st-by st-bz st-ck"><div data-baseweb="base-input" class="st-b3 st-be st-c1 st-bk st-bl st-bq st-br st-bs st-bt st-c2 st-by"><input aria-invalid="false" aria-required="false" autocomplete="on" id="custom-subdomain-field" inputmode="text" name="" placeholder="" type="text" class="st-bc st-c3 st-c4 st-c5 st-c6 st-c7 st-c8 st-c9 st-ca st-cb st-cc st-be st-cd st-ce st-cf st-cg st-ch st-ci st-cj st-ck st-bq st-br st-bs st-bt st-c2 st-cl st-cm" value="cybertraceai-bz5ec3nqmksfhudhmwvjal"></div><div class="st-b3 st-cp st-cq st-cr st-bk st-bl st-bq st-br st-bs st-bt st-cs st-ct st-c2 st-by">.streamlit.app</div></div><p class="_success_qruan_17">Domain is available</p></div><div class="_field_1i0n1_27"><a class="_link_ymhb9_1" href="https://share.streamlit.io/deploy">Advanced settings</a></div><button type="submit" class="_button_qx90d_1 _button_primary_qx90d_26 _button_1i0n1_7" data-testid="deploy-button">Deploy</button></form></div></main></div></div><div class=""></div></div>
+
+    <!-- Status page embed -->
+    <script src="./Deploy an app · Streamlit_files/script.js.download"></script><iframe src="./Deploy an app · Streamlit_files/frame.html" title="Streamlit Cloud Status" aria-hidden="true" style="position: fixed; border-width: medium; border-style: none; border-color: currentcolor; border-image: none; box-shadow: rgba(9, 20, 66, 0.25) 0px 20px 32px -8px; z-index: 9999; transition: left 1s, bottom 1s, right 1s; height: 115px; width: 320px; left: -9999px; right: auto; bottom: 60px;" upktnh56p=""></iframe>
+  
+
+<div id="mktoStyleLoaded" style="display: none; border-top-color: rgb(18, 52, 86);"></div><form class="_formWrapper_u587s_36 mktoForm mktoHasWidth mktoLayoutLeft" novalidate="novalidate" style="font-family: inherit; font-size: 13px; color: rgb(51, 51, 51); visibility: hidden; position: absolute; top: -500px; left: -1000px; width: 1897px;"></form><iframe name="mktoFormsXDIframe0.22707214738542614" id="MktoForms2XDIframe" src="./Deploy an app · Streamlit_files/XDFrame.html" style="display: none;"></iframe><div data-baseweb="toaster" class="st-az st-b0 st-b1 st-b2 st-b3 st-b4 st-b5 st-b6 st-b7 st-b8 st-b9 st-ba st-bb"></div></body></html>
