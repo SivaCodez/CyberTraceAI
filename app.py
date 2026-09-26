@@ -101,7 +101,6 @@ if 'network_data' in st.session_state:
             if not df.empty:
                 G = nx.Graph()
                 
-                # Create a list of all identified "Suspects" to help with coloring later
                 suspects_set = set(df['Suspect'].dropna().astype(str).str.strip())
                 
                 # Step 1: Build edges
@@ -116,7 +115,6 @@ if 'network_data' in st.session_state:
                 # Step 2: Calculate distinct network math
                 if len(G.nodes) > 0:
                     degrees = dict(G.degree())
-                    # Use Betweenness for the Leader (who acts as a bridge between groups)
                     centrality = nx.betweenness_centrality(G) 
                     
                     leader_node = max(centrality, key=centrality.get)
@@ -130,17 +128,16 @@ if 'network_data' in st.session_state:
                 # Step 3: Apply STRICT colors and tooltips
                 for node in G.nodes():
                     conns = degrees.get(node, 0)
-                    score = round(centrality.get(node, 0), 4) # Showing 4 decimals for precision
+                    score = round(centrality.get(node, 0), 4)
                     
                     hover_text = f"{node}\nConnections: {conns}\nCentrality Score: {score}"
                     
-                    # Strictly define colors
                     if node == leader_node:
-                        node_color = "#FFD700"  # Yellow for Leader ONLY
+                        node_color = "#FFD700" 
                     elif node in suspects_set:
-                        node_color = "#FF3366"  # Pink for normal Suspects
+                        node_color = "#FF3366" 
                     else:
-                        node_color = "#00E6CC"  # Cyan for Targets/Locations
+                        node_color = "#00E6CC" 
                     
                     G.nodes[node]['title'] = hover_text
                     G.nodes[node]['label'] = node
@@ -181,20 +178,9 @@ if 'network_data' in st.session_state:
                 st.error("No valid connections were extracted. Check your file format.")
 
         with col2:
-            st.markdown("### 📊 Network Stats")
+            # --- AI Insights Section Moved to Top ---
+            st.markdown("### 🤖 AI Insights")
             if not df.empty:
-                st.metric("Total Connections Found", len(df))
-                unique_entities = set(df['Suspect'].dropna()).union(set(df['Target'].dropna()))
-                unique_entities = {e for e in unique_entities if e not in ["Unknown", "None", None, ""]}
-                st.metric("Unique Entities Tracked", len(unique_entities))
-                
-                st.divider()
-                st.markdown("### 🎯 Top Suspects")
-                top_suspects = df[~df['Suspect'].isin(['None', 'Unknown', ''])].copy()
-                st.dataframe(top_suspects['Suspect'].value_counts().head(5), use_container_width=True)
-                
-                st.divider()
-                st.markdown("### 🤖 AI Insights")
                 if leader_node:
                     st.markdown(f"""
                         <div class="ai-insight-box-leader">
@@ -210,6 +196,16 @@ if 'network_data' in st.session_state:
                             <b>{most_connected_node}</b> has the highest volume of direct interactions ({degrees.get(most_connected_node, 0)} connections).
                         </div>
                     """, unsafe_allow_html=True)
+                    
+            st.divider()
+            
+            # --- Network Stats Section ---
+            st.markdown("### 📊 Network Stats")
+            if not df.empty:
+                st.metric("Total Connections Found", len(df))
+                unique_entities = set(df['Suspect'].dropna()).union(set(df['Target'].dropna()))
+                unique_entities = {e for e in unique_entities if e not in ["Unknown", "None", None, ""]}
+                st.metric("Unique Entities Tracked", len(unique_entities))
 
     elif st.session_state['current_page'] == "Raw Data Details":
         st.subheader("🗄️ Extracted Investigation Data")
