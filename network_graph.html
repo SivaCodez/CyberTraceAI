@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 800px;
+                 background-color: #1a1a1a;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Victor Vance", "label": "Victor Vance", "shape": "dot", "size": 25, "title": "Entity: Victor Vance\nRole: Mid-level Associate\nInfluence Score: 0.40\nDirect Connections: 6"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Offshore Shell Corp", "label": "Offshore Shell Corp", "shape": "dot", "size": 25, "title": "Entity: Offshore Shell Corp\nRole: Mid-level Associate\nInfluence Score: 0.20\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Elena Rostova", "label": "Elena Rostova", "shape": "dot", "size": 25, "title": "Entity: Elena Rostova\nRole: Mid-level Associate\nInfluence Score: 0.19\nDirect Connections: 4"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Marcus Dunn", "label": "Marcus Dunn", "shape": "dot", "size": 25, "title": "Entity: Marcus Dunn\nRole: Mid-level Associate\nInfluence Score: 0.22\nDirect Connections: 3"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Lance Vance", "label": "Lance Vance", "shape": "dot", "size": 25, "title": "Entity: Lance Vance\nRole: Mid-level Associate\nInfluence Score: 0.21\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#FFD700", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Warehouse 42", "label": "Warehouse 42", "shape": "dot", "size": 25, "title": "Entity: Warehouse 42\nRole: Mid-level Associate\nInfluence Score: 0.09\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#FFD700", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Foot Worker / Peripheral", "id": "Pier 17", "label": "Pier 17", "shape": "dot", "size": 15, "title": "Entity: Pier 17\nRole: Foot Worker / Peripheral\nInfluence Score: 0.07\nDirect Connections: 1"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Leo Thorne", "label": "Leo Thorne", "shape": "dot", "size": 25, "title": "Entity: Leo Thorne\nRole: Mid-level Associate\nInfluence Score: 0.09\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Bruce Wayne", "label": "Bruce Wayne", "shape": "dot", "size": 25, "title": "Entity: Bruce Wayne\nRole: Mid-level Associate\nInfluence Score: 0.25\nDirect Connections: 4"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "James Gordon", "label": "James Gordon", "shape": "dot", "size": 25, "title": "Entity: James Gordon\nRole: Mid-level Associate\nInfluence Score: 0.25\nDirect Connections: 3"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Lucius Fox", "label": "Lucius Fox", "shape": "dot", "size": 25, "title": "Entity: Lucius Fox\nRole: Mid-level Associate\nInfluence Score: 0.16\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Carmine Falcone", "label": "Carmine Falcone", "shape": "dot", "size": 25, "title": "Entity: Carmine Falcone\nRole: Mid-level Associate\nInfluence Score: 0.36\nDirect Connections: 4"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Sonny Forelli", "label": "Sonny Forelli", "shape": "dot", "size": 25, "title": "Entity: Sonny Forelli\nRole: Mid-level Associate\nInfluence Score: 0.25\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#FF4B4B", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Leader / Kingpin", "id": "Tommy Vercetti", "label": "Tommy Vercetti", "shape": "dot", "size": 35, "title": "Entity: Tommy Vercetti\nRole: Leader / Kingpin\nInfluence Score: 0.41\nDirect Connections: 4"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Marcus Wright", "label": "Marcus Wright", "shape": "dot", "size": 25, "title": "Entity: Marcus Wright\nRole: Mid-level Associate\nInfluence Score: 0.26\nDirect Connections: 3"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Sarah Connor", "label": "Sarah Connor", "shape": "dot", "size": 25, "title": "Entity: Sarah Connor\nRole: Mid-level Associate\nInfluence Score: 0.17\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Selina Kyle", "label": "Selina Kyle", "shape": "dot", "size": 25, "title": "Entity: Selina Kyle\nRole: Mid-level Associate\nInfluence Score: 0.20\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Arthur Miller", "label": "Arthur Miller", "shape": "dot", "size": 25, "title": "Entity: Arthur Miller\nRole: Mid-level Associate\nInfluence Score: 0.00\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Thomas Shelby", "label": "Thomas Shelby", "shape": "dot", "size": 25, "title": "Entity: Thomas Shelby\nRole: Mid-level Associate\nInfluence Score: 0.00\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "John Watson", "label": "John Watson", "shape": "dot", "size": 25, "title": "Entity: John Watson\nRole: Mid-level Associate\nInfluence Score: 0.00\nDirect Connections: 3"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Mid-level Associate", "id": "Marcus Kane", "label": "Marcus Kane", "shape": "dot", "size": 25, "title": "Entity: Marcus Kane\nRole: Mid-level Associate\nInfluence Score: 0.00\nDirect Connections: 2"}, {"borderWidth": 2, "color": "#FFD700", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Foot Worker / Peripheral", "id": "Apex Corporation", "label": "Apex Corporation", "shape": "dot", "size": 15, "title": "Entity: Apex Corporation\nRole: Foot Worker / Peripheral\nInfluence Score: 0.00\nDirect Connections: 1"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Foot Worker / Peripheral", "id": "Bristol", "label": "Bristol", "shape": "dot", "size": 15, "title": "Entity: Bristol\nRole: Foot Worker / Peripheral\nInfluence Score: 0.00\nDirect Connections: 1"}, {"borderWidth": 2, "color": "#ffffff", "font": {"color": "white", "face": "arial", "size": 18}, "group": "Foot Worker / Peripheral", "id": "The City Bank", "label": "The City Bank", "shape": "dot", "size": 15, "title": "Entity: The City Bank\nRole: Foot Worker / Peripheral\nInfluence Score: 0.00\nDirect Connections: 1"}]);
+                  edges = new vis.DataSet([{"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Victor Vance", "label": "TRANSFERRED_MONEY", "title": "TRANSFERRED_MONEY", "to": "Offshore Shell Corp", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Victor Vance", "label": "ASSOCIATED_WITH", "title": "ASSOCIATED_WITH", "to": "Elena Rostova", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Victor Vance", "label": "MET_WITH", "title": "MET_WITH", "to": "Marcus Dunn", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Victor Vance", "label": "CALLED", "title": "CALLED", "to": "Lance Vance", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Elena Rostova", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Warehouse 42", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Elena Rostova", "label": "TRANSFERRED_MONEY", "title": "TRANSFERRED_MONEY", "to": "Victor Vance", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Marcus Dunn", "label": "TRANSFERRED_MONEY", "title": "TRANSFERRED_MONEY", "to": "Offshore Shell Corp", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Marcus Dunn", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Pier 17", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Leo Thorne", "label": "ASSOCIATED_WITH", "title": "ASSOCIATED_WITH", "to": "Elena Rostova", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Leo Thorne", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Warehouse 42", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Bruce Wayne", "label": "CALLED", "title": "CALLED", "to": "James Gordon", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Bruce Wayne", "label": "CALLED", "title": "CALLED", "to": "Lucius Fox", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "James Gordon", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Carmine Falcone", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Carmine Falcone", "label": "TRANSFERRED_MONEY", "title": "TRANSFERRED_MONEY", "to": "Sonny Forelli", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Sonny Forelli", "label": "CALLED", "title": "CALLED", "to": "Tommy Vercetti", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Tommy Vercetti", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Victor Vance", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Tommy Vercetti", "label": "CALLED", "title": "CALLED", "to": "Carmine Falcone", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Lance Vance", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Marcus Wright", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Marcus Wright", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Sarah Connor", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Marcus Wright", "label": "CALLED", "title": "CALLED", "to": "Tommy Vercetti", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Sarah Connor", "label": "CALLED", "title": "CALLED", "to": "Bruce Wayne", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Selina Kyle", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Bruce Wayne", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Selina Kyle", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Carmine Falcone", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Lucius Fox", "label": "TRANSFERRED_MONEY", "title": "TRANSFERRED_MONEY", "to": "James Gordon", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Arthur Miller", "label": "CALLED", "title": "CALLED", "to": "Thomas Shelby", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Thomas Shelby", "label": "TRANSFERRED_MONEY", "title": "TRANSFERRED_MONEY", "to": "John Watson", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "John Watson", "label": "MET_WITH", "title": "MET_WITH", "to": "Marcus Kane", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "John Watson", "label": "LOCATED_AT", "title": "LOCATED_AT", "to": "Apex Corporation", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "Marcus Kane", "label": "ASSOCIATED_WITH", "title": "ASSOCIATED_WITH", "to": "Bristol", "width": 1}, {"arrows": "to", "color": "#ffffff", "font": {"align": "middle", "background": "#1a1a1a", "color": "#cccccc", "size": 12}, "from": "The City Bank", "label": "CALLED", "title": "CALLED", "to": "Arthur Miller", "width": 1}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "enabled": true,
+        "repulsion": {
+            "centralGravity": 0.1,
+            "damping": 0.09,
+            "nodeDistance": 300,
+            "springConstant": 0.05,
+            "springLength": 200
+        },
+        "solver": "repulsion",
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>

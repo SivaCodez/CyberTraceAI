@@ -1,0 +1,8 @@
+streamlit
+pandas
+spacy
+rapidfuzz
+python-dateutil
+networkx
+pyvis
+google-genai

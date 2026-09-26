@@ -1,0 +1,25 @@
+Suspect,Relationship,Target,Date
+Victor Vance,TRANSFERRED_MONEY,Offshore Shell Corp,2023-10-01
+Victor Vance,COMMUNICATED_WITH,Elena Rostova,2023-10-02
+Elena Rostova,LOCATED_AT,Warehouse 42,2023-10-03
+Victor Vance,MET_WITH,Marcus Dunn,2023-10-05
+Marcus Dunn,TRANSFERRED_MONEY,Offshore Shell Corp,2023-10-06
+Marcus Dunn,LOCATED_AT,Pier 17,2023-10-07
+Elena Rostova,TRANSFERRED_MONEY,Victor Vance,2023-10-09
+Leo Thorne,COMMUNICATED_WITH,Elena Rostova,2023-10-10
+Leo Thorne,LOCATED_AT,Warehouse 42,2023-10-11
+Bruce Wayne,CALLED,James Gordon,2026-10-01
+James Gordon,VISITED,Carmine Falcone,2026-10-02
+Carmine Falcone,TRANSFERRED_MONEY,Sonny Forelli,2026-10-03
+Sonny Forelli,CALLED,Tommy Vercetti,2026-10-04
+Tommy Vercetti,VISITED,Victor Vance,2026-10-05
+Victor Vance,CALLED,Lance Vance,2026-10-06
+Lance Vance,COMMUNICATED,Marcus Wright,2026-10-07
+Marcus Wright,VISITED,Sarah Connor,2026-10-08
+Sarah Connor,CALLED,Bruce Wayne,2026-10-09
+Selina Kyle,VISITED,Bruce Wayne,2026-10-10
+Selina Kyle,COMMUNICATED,Carmine Falcone,2026-10-11
+Bruce Wayne,CALLED,Lucius Fox,2026-10-12
+Lucius Fox,TRANSFERRED_MONEY,James Gordon,2026-10-13
+Tommy Vercetti,CALLED,Carmine Falcone,2026-10-14
+Marcus Wright,CALLED,Tommy Vercetti,2026-10-15
