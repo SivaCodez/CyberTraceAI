@@ -116,11 +116,10 @@ if 'network_data' in st.session_state:
                     conns = degrees.get(node, 0)
                     score = round(centrality.get(node, 0), 2)
                     
-                    # Use \n instead of HTML for proper PyVis tooltip formatting
                     hover_text = f"{node}\nConnections: {conns}\nRisk Score: {score}"
                     
-                    # Apply dark red if it is the leader, otherwise use base color
-                    node_color = "#CC0000" if node == leader_node else base_colors.get(node, "#FFFFFF")
+                    # Highlight leader in yellow, otherwise default color
+                    node_color = "#FFD700" if node == leader_node else base_colors.get(node, "#FFFFFF")
                     
                     G.nodes[node]['title'] = hover_text
                     G.nodes[node]['label'] = node
@@ -129,23 +128,24 @@ if 'network_data' in st.session_state:
                 net = Network(height="700px", width="100%", bgcolor="#050505", font_color="white", directed=True)
                 net.from_nx(G)
                 
+                # Step 4: Options with larger fonts and margins for larger nodes
                 net.set_options("""
                 var options = {
                   "nodes": {
                     "shape": "ellipse",
                     "font": { 
-                        "size": 26, 
+                        "size": 32, 
                         "color": "#FFFFFF", 
                         "face": "Arial",
                         "bold": true
                     },
-                    "margin": 12,
-                    "borderWidth": 2,
+                    "margin": 24,
+                    "borderWidth": 3,
                     "shadow": true
                   },
                   "edges": {
                     "font": { 
-                        "size": 16, 
+                        "size": 18, 
                         "align": "middle", 
                         "color": "#00E6CC", 
                         "background": "rgba(5, 5, 5, 0.8)",
@@ -153,13 +153,13 @@ if 'network_data' in st.session_state:
                     },
                     "color": { "inherit": false, "color": "#4A5568" },
                     "smooth": { "type": "continuous" },
-                    "width": 2
+                    "width": 3
                   },
                   "physics": {
                     "barnesHut": { 
-                        "gravitationalConstant": -15000, 
+                        "gravitationalConstant": -20000, 
                         "centralGravity": 0.4, 
-                        "springLength": 200,
+                        "springLength": 250,
                         "springConstant": 0.04
                     },
                     "minVelocity": 0.75
