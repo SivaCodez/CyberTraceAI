@@ -27,6 +27,21 @@ st.markdown("""
            [data-testid="stSidebar"] {
                background-color: #111111;
            }
+           /* Custom styling for AI insight boxes */
+           .ai-insight-box {
+               background-color: #1a1c23;
+               border-left: 4px solid #00E6CC;
+               padding: 15px;
+               border-radius: 5px;
+               margin-bottom: 10px;
+           }
+           .ai-insight-box-leader {
+               background-color: #1a1c23;
+               border-left: 4px solid #FFD700;
+               padding: 15px;
+               border-radius: 5px;
+               margin-bottom: 10px;
+           }
     </style>
     """, unsafe_allow_html=True)
 
@@ -97,19 +112,21 @@ if 'network_data' in st.session_state:
                     if source not in ["Unknown", "None", ""] and target not in ["Unknown", "None", ""]:
                         G.add_edge(source, target, label=relation)
                         if source not in base_colors:
-                            base_colors[source] = "#FF3366" # Default Suspect (Pink)
+                            base_colors[source] = "#FF3366" 
                         if target not in base_colors:
-                            base_colors[target] = "#00E6CC" # Default Target (Cyan)
+                            base_colors[target] = "#00E6CC" 
                 
                 # Step 2: Calculate stats and find the Leader
                 if len(G.nodes) > 0:
                     degrees = dict(G.degree())
                     centrality = nx.degree_centrality(G)
                     leader_node = max(centrality, key=centrality.get)
+                    most_connected_node = max(degrees, key=degrees.get)
                 else:
                     degrees = {}
                     centrality = {}
                     leader_node = None
+                    most_connected_node = None
 
                 # Step 3: Apply tooltips and dynamic coloring
                 for node in G.nodes():
@@ -118,7 +135,6 @@ if 'network_data' in st.session_state:
                     
                     hover_text = f"{node}\nConnections: {conns}\nRisk Score: {score}"
                     
-                    # Highlight leader in yellow, otherwise default color
                     node_color = "#FFD700" if node == leader_node else base_colors.get(node, "#FFFFFF")
                     
                     G.nodes[node]['title'] = hover_text
@@ -128,46 +144,26 @@ if 'network_data' in st.session_state:
                 net = Network(height="700px", width="100%", bgcolor="#050505", font_color="white", directed=True)
                 net.from_nx(G)
                 
-                # Step 4: Options with larger fonts and margins for larger nodes
                 net.set_options("""
                 var options = {
                   "nodes": {
                     "shape": "ellipse",
-                    "font": { 
-                        "size": 32, 
-                        "color": "#FFFFFF", 
-                        "face": "Arial",
-                        "bold": true
-                    },
+                    "font": { "size": 32, "color": "#FFFFFF", "face": "Arial", "bold": true },
                     "margin": 24,
                     "borderWidth": 3,
                     "shadow": true
                   },
                   "edges": {
-                    "font": { 
-                        "size": 18, 
-                        "align": "middle", 
-                        "color": "#00E6CC", 
-                        "background": "rgba(5, 5, 5, 0.8)",
-                        "strokeWidth": 0
-                    },
+                    "font": { "size": 18, "align": "middle", "color": "#00E6CC", "background": "rgba(5, 5, 5, 0.8)", "strokeWidth": 0 },
                     "color": { "inherit": false, "color": "#4A5568" },
                     "smooth": { "type": "continuous" },
                     "width": 3
                   },
                   "physics": {
-                    "barnesHut": { 
-                        "gravitationalConstant": -20000, 
-                        "centralGravity": 0.4, 
-                        "springLength": 250,
-                        "springConstant": 0.04
-                    },
+                    "barnesHut": { "gravitationalConstant": -20000, "centralGravity": 0.4, "springLength": 250, "springConstant": 0.04 },
                     "minVelocity": 0.75
                   },
-                  "interaction": {
-                    "hover": true,
-                    "tooltipDelay": 200
-                  }
+                  "interaction": { "hover": true, "tooltipDelay": 200 }
                 }
                 """)
                 
@@ -191,11 +187,49 @@ if 'network_data' in st.session_state:
                 st.markdown("### 🎯 Top Suspects")
                 top_suspects = df[~df['Suspect'].isin(['None', 'Unknown', ''])].copy()
                 st.dataframe(top_suspects['Suspect'].value_counts().head(5), use_container_width=True)
+                
+                # --- NEW: AI Insights Section ---
+                st.divider()
+                st.markdown("### 🤖 AI Insights")
+                if leader_node:
+                    st.markdown(f"""
+                        <div class="ai-insight-box-leader">
+                            <span style="color: #FFD700; font-weight: bold;">👑 Suspected Kingpin:</span><br>
+                            <b>{leader_node}</b> has the highest centrality score, acting as the primary bridge holding this network together.
+                        </div>
+                    """, unsafe_allow_html=True)
+                
+                if most_connected_node:
+                    st.markdown(f"""
+                        <div class="ai-insight-box">
+                            <span style="color: #00E6CC; font-weight: bold;">📡 Top Distributor:</span><br>
+                            <b>{most_connected_node}</b> has the highest volume of direct interactions ({degrees.get(most_connected_node, 0)} connections).
+                        </div>
+                    """, unsafe_allow_html=True)
 
     elif st.session_state['current_page'] == "Raw Data Details":
-        st.subheader("Extracted Investigation Data")
+        st.subheader("🗄️ Extracted Investigation Data")
         st.markdown("Review the structured connections extracted via Pandas and spaCy.")
-        st.dataframe(df, use_container_width=True, height=600)
+        
+        # --- NEW: Styled DataFrame with Colors ---
+        def style_relationships(val):
+            val_str = str(val).upper()
+            if 'CALLED' in val_str or 'COMMUNICATED' in val_str:
+                return 'color: #FF3366; font-weight: bold;'
+            elif 'TRANSFERRED' in val_str or 'MONEY' in val_str:
+                return 'color: #00E6CC; font-weight: bold;'
+            elif 'LOCATED' in val_str or 'VISITED' in val_str:
+                return 'color: #FFD700; font-weight: bold;'
+            return 'color: #A0AEC0;'
+
+        # Apply the styling map
+        try:
+            styled_df = df.style.map(style_relationships, subset=['Relationship'])
+        except AttributeError:
+            # Fallback for older pandas versions
+            styled_df = df.style.applymap(style_relationships, subset=['Relationship'])
+            
+        st.dataframe(styled_df, use_container_width=True, height=600, hide_index=True)
 
 else:
     st.info("👈 Upload your data files in the sidebar and click Generate to start the analysis.")
