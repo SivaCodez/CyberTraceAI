@@ -5,15 +5,9 @@ import subprocess
 
 # Load the spaCy NLP model
 # Automatically download the model on Streamlit Cloud if it's missing
-from spacy.cli import download
 
-# Load the spaCy NLP model natively
-try:
-    nlp = spacy.load("en_core_web_sm")
-except OSError:
-    print("Downloading spaCy model natively...")
-    download("en_core_web_sm")
-    nlp = spacy.load("en_core_web_sm")
+# Load the model directly
+nlp = spacy.load("en_core_web_sm")
 
 def process_investigation_data(csv_path, txt_path, default_date="Unknown"):
     """
