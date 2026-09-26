@@ -5,13 +5,12 @@ import streamlit.components.v1 as components
 import pandas as pd
 import os
 
-# Import your data processing function from your existing input.py file
 from input import process_investigation_data
 
 # 1. Set Wide Layout
 st.set_page_config(layout="wide", page_title="CyberTrace AI", initial_sidebar_state="expanded")
 
-# 2. Custom CSS to eliminate top white space
+# 2. Custom CSS for layout padding
 st.markdown("""
     <style>
            .block-container {
@@ -21,9 +20,14 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Sidebar: Team Info & Data Upload
-st.sidebar.markdown("## CyberTrace AI")
-st.sidebar.markdown("---")
+# 3. Sidebar: Big Stylized CyberTrace AI Header
+st.sidebar.markdown("""
+    <h1 style='text-align: left; font-size: 2.8em; font-weight: 900; margin-bottom: 0px; line-height: 1.1;'>
+        <span style='color: #00E6CC;'>Cyber</span><span style='color: #FF3366;'>Trace</span> <br>AI
+    </h1>
+    <hr style='margin-top: 10px; margin-bottom: 20px; border-color: #333;'>
+""", unsafe_allow_html=True)
+
 st.sidebar.header("📁 Data Sources")
 
 csv_file = st.sidebar.file_uploader("Upload Structured Data (CSV)", type=["csv"])
@@ -38,9 +42,6 @@ if analyze_btn:
         st.warning("Please upload at least one file (CSV or TXT) before generating.")
     else:
         with st.spinner("Extracting entities and building network..."):
-            
-            # --- FILE HANDLING FIX ---
-            # Streamlit keeps uploads in memory. We must save them locally so input.py can read them.
             csv_path = "temp_data.csv"
             txt_path = "temp_report.txt"
             
@@ -51,7 +52,6 @@ if analyze_btn:
                 with open(txt_path, "wb") as f:
                     f.write(txt_file.getbuffer())
                     
-            # Run your extraction pipeline
             df = process_investigation_data(
                 csv_path if csv_file else "missing.csv", 
                 txt_path if txt_file else "missing.txt"
@@ -64,37 +64,53 @@ if analyze_btn:
                 st.subheader("Interactive Criminal Network")
                 
                 if not df.empty:
-                    # --- GRAPH BUILDING FIX ---
                     G = nx.Graph()
                     
-                    # Loop through the extracted dataframe and add actual nodes/edges
                     for index, row in df.iterrows():
-                        source = str(row.get('Suspect', 'Unknown'))
-                        target = str(row.get('Target', 'Unknown'))
-                        relation = str(row.get('Relationship', 'Unknown'))
+                        source = str(row.get('Suspect', 'Unknown')).strip()
+                        target = str(row.get('Target', 'Unknown')).strip()
+                        relation = str(row.get('Relationship', 'Unknown')).strip()
                         
-                        if source != "Unknown" and target != "Unknown" and source != "None" and target != "None":
-                            G.add_node(source, title=source, size=20)
-                            G.add_node(target, title=target, size=20)
+                        if source not in ["Unknown", "None", ""] and target not in ["Unknown", "None", ""]:
+                            # Add Suspect Node (Neon Pink/Red)
+                            G.add_node(source, title=source, label=source, color="#FF3366")
+                            # Add Target Node (Neon Cyan)
+                            G.add_node(target, title=target, label=target, color="#00E6CC")
+                            # Add Edge
                             G.add_edge(source, target, label=relation)
                     
-                    # Configure PyVis
                     net = Network(height="650px", width="100%", bgcolor="#0E1117", font_color="white", directed=True)
                     net.from_nx(G)
                     
+                    # Graph styling: Ellipse shapes (text inside), big fonts, glowing shadows
                     net.set_options("""
                     var options = {
                       "nodes": {
-                        "font": { "size": 22, "color": "#FFFFFF", "face": "Arial" },
-                        "shape": "dot"
+                        "shape": "ellipse",
+                        "font": { 
+                            "size": 24, 
+                            "color": "#FFFFFF", 
+                            "face": "Arial",
+                            "bold": true
+                        },
+                        "margin": 12,
+                        "borderWidth": 2,
+                        "shadow": true
                       },
                       "edges": {
-                        "font": { "size": 16, "align": "middle", "color": "#A0AEC0", "background": "none" },
-                        "color": { "inherit": false, "color": "#4A5568" },
-                        "smooth": { "type": "continuous" }
+                        "font": { 
+                            "size": 18, 
+                            "align": "middle", 
+                            "color": "#00E6CC", 
+                            "background": "rgba(14, 17, 23, 0.7)",
+                            "strokeWidth": 0
+                        },
+                        "color": { "inherit": false, "color": "#5C6B82" },
+                        "smooth": { "type": "continuous" },
+                        "width": 2
                       },
                       "physics": {
-                        "barnesHut": { "gravitationalConstant": -30000, "centralGravity": 0.3, "springLength": 250 }
+                        "barnesHut": { "gravitationalConstant": -40000, "centralGravity": 0.4, "springLength": 300 }
                       }
                     }
                     """)
@@ -108,21 +124,18 @@ if analyze_btn:
                     st.error("No valid connections were extracted. Check your file format.")
 
             with col2:
-                # Replaced AI Insights with functional Network Statistics
                 st.subheader("Network Statistics")
                 if not df.empty:
                     st.metric("Total Connections Found", len(df))
                     unique_entities = set(df['Suspect'].dropna()).union(set(df['Target'].dropna()))
-                    # Clean out "None" or "Unknown" from the count
-                    unique_entities = {e for e in unique_entities if e not in ["Unknown", "None", None]}
+                    unique_entities = {e for e in unique_entities if e not in ["Unknown", "None", None, ""]}
                     st.metric("Unique Entities Tracked", len(unique_entities))
                     
                     st.divider()
                     st.markdown("### Top Suspects")
                     st.caption("Individuals initiating the most connections:")
-                    # Count which suspects appear the most
-                    top_suspects = df[df['Suspect'] != 'None']['Suspect'].value_counts().head(5)
-                    st.dataframe(top_suspects, use_container_width=True)
+                    top_suspects = df[~df['Suspect'].isin(['None', 'Unknown', ''])].copy()
+                    st.dataframe(top_suspects['Suspect'].value_counts().head(5), use_container_width=True)
 
         with tab2:
             st.subheader("Extracted Investigation Data")
