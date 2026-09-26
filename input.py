@@ -1,9 +1,16 @@
 import pandas as pd
 import spacy
 import os
+import subprocess
 
 # Load the spaCy NLP model
-nlp = spacy.load("en_core_web_sm")
+# Automatically download the model on Streamlit Cloud if it's missing
+try:
+    nlp = spacy.load("en_core_web_sm")
+except OSError:
+    print("Downloading spaCy model...")
+    subprocess.run(["python", "-m", "spacy", "download", "en_core_web_sm"])
+    nlp = spacy.load("en_core_web_sm")
 
 def process_investigation_data(csv_path, txt_path, default_date="Unknown"):
     """
