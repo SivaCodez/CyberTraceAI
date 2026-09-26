@@ -38,7 +38,7 @@ st.markdown("""
     <hr style='border: 1px solid #333; margin-top: 0px; margin-bottom: 25px;'>
 """, unsafe_allow_html=True)
 
-# 4. Sidebar: Navigation (Using Buttons instead of Radio)
+# 4. Sidebar: Navigation (Using Buttons)
 st.sidebar.header("Navigation")
 
 if st.sidebar.button("Interactive Dashboard", use_container_width=True):
@@ -74,10 +74,9 @@ if analyze_btn:
                 csv_path if csv_file else "missing.csv", 
                 txt_path if txt_file else "missing.txt"
             )
-            # Force view back to dashboard on new generation
             st.session_state['current_page'] = "Interactive Dashboard" 
 
-# 6. Page Routing based on Button Clicks
+# 6. Page Routing
 if 'network_data' in st.session_state:
     df = st.session_state['network_data']
 
@@ -88,36 +87,49 @@ if 'network_data' in st.session_state:
             if not df.empty:
                 G = nx.Graph()
                 
+                # Step 1: Build basic nodes and edges
                 for index, row in df.iterrows():
                     source = str(row.get('Suspect', 'Unknown')).strip()
                     target = str(row.get('Target', 'Unknown')).strip()
                     relation = str(row.get('Relationship', 'Unknown')).strip()
                     
                     if source not in ["Unknown", "None", ""] and target not in ["Unknown", "None", ""]:
-                        G.add_node(source, title=source, label=source, color="#FF3366")
-                        G.add_node(target, title=target, label=target, color="#00E6CC")
+                        G.add_node(source, label=source, color="#FF3366")
+                        G.add_node(target, label=target, color="#00E6CC")
                         G.add_edge(source, target, label=relation)
+                
+                # Step 2: Calculate Network Stats for Hover Tooltips
+                degrees = dict(G.degree())
+                centrality = nx.degree_centrality(G)
+                
+                for node in G.nodes():
+                    conns = degrees[node]
+                    score = round(centrality[node], 2)
+                    # PyVis 'title' accepts HTML for rich hover states
+                    hover_html = f"<b>{node}</b><br>Connections: {conns}<br>Risk Score: {score}"
+                    G.nodes[node]['title'] = hover_html
                 
                 net = Network(height="700px", width="100%", bgcolor="#050505", font_color="white", directed=True)
                 net.from_nx(G)
                 
+                # Step 3: Tame the physics for better initial zoom
                 net.set_options("""
                 var options = {
                   "nodes": {
                     "shape": "ellipse",
                     "font": { 
-                        "size": 28, 
+                        "size": 26, 
                         "color": "#FFFFFF", 
                         "face": "Arial",
                         "bold": true
                     },
-                    "margin": 15,
+                    "margin": 12,
                     "borderWidth": 2,
                     "shadow": true
                   },
                   "edges": {
                     "font": { 
-                        "size": 18, 
+                        "size": 16, 
                         "align": "middle", 
                         "color": "#00E6CC", 
                         "background": "rgba(5, 5, 5, 0.8)",
@@ -129,11 +141,16 @@ if 'network_data' in st.session_state:
                   },
                   "physics": {
                     "barnesHut": { 
-                        "gravitationalConstant": -80000, 
-                        "centralGravity": 0.1, 
-                        "springLength": 500,
-                        "springConstant": 0.02
-                    }
+                        "gravitationalConstant": -15000, 
+                        "centralGravity": 0.4, 
+                        "springLength": 200,
+                        "springConstant": 0.04
+                    },
+                    "minVelocity": 0.75
+                  },
+                  "interaction": {
+                    "hover": true,
+                    "tooltipDelay": 200
                   }
                 }
                 """)
