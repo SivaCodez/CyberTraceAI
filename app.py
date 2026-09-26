@@ -10,6 +10,10 @@ from input import process_investigation_data
 # 1. Set Wide Layout
 st.set_page_config(layout="wide", page_title="CyberTrace AI", initial_sidebar_state="expanded")
 
+# Initialize Session State for Page Navigation
+if 'current_page' not in st.session_state:
+    st.session_state['current_page'] = "Interactive Dashboard"
+
 # 2. Custom CSS for true-black background and layout padding
 st.markdown("""
     <style>
@@ -17,18 +21,16 @@ st.markdown("""
                 padding-top: 1rem;
                 padding-bottom: 0rem;
             }
-           /* Make the main app background extremely dark/black */
            .stApp {
                background-color: #050505;
            }
-           /* Style the sidebar slightly lighter for contrast */
            [data-testid="stSidebar"] {
                background-color: #111111;
            }
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Main Header (Top Left, always visible, single line)
+# 3. Main Header (Top Left)
 st.markdown("""
     <h1 style='text-align: left; font-size: 2.5em; font-weight: 900; margin-bottom: 10px; margin-top: 0px;'>
         <span style='color: #00E6CC;'>Cyber</span><span style='color: #FF3366;'>Trace</span> <span style='color: #FFFFFF;'>AI</span>
@@ -36,9 +38,14 @@ st.markdown("""
     <hr style='border: 1px solid #333; margin-top: 0px; margin-bottom: 25px;'>
 """, unsafe_allow_html=True)
 
-# 4. Sidebar: Navigation & Data Upload
-st.sidebar.header("🧭 Navigation")
-page = st.sidebar.radio("Select View:", ["Interactive Dashboard", "Raw Data Details"])
+# 4. Sidebar: Navigation (Using Buttons instead of Radio)
+st.sidebar.header("Navigation")
+
+if st.sidebar.button("Interactive Dashboard", use_container_width=True):
+    st.session_state['current_page'] = "Interactive Dashboard"
+    
+if st.sidebar.button("Raw Data Details", use_container_width=True):
+    st.session_state['current_page'] = "Raw Data Details"
 
 st.sidebar.markdown("---")
 st.sidebar.header("📁 Data Sources")
@@ -48,7 +55,6 @@ txt_file = st.sidebar.file_uploader("Upload Unstructured Reports (TXT)", type=["
 analyze_btn = st.sidebar.button("Generate Network", type="primary", use_container_width=True)
 
 # 5. Handle Data Processing and Session State
-# Using session_state ensures data persists when switching between the Dashboard and Data Details views
 if analyze_btn:
     if csv_file is None and txt_file is None:
         st.sidebar.warning("Please upload at least one file (CSV or TXT).")
@@ -64,17 +70,18 @@ if analyze_btn:
                 with open(txt_path, "wb") as f:
                     f.write(txt_file.getbuffer())
                     
-            # Store the resulting dataframe in Streamlit's session memory
             st.session_state['network_data'] = process_investigation_data(
                 csv_path if csv_file else "missing.csv", 
                 txt_path if txt_file else "missing.txt"
             )
+            # Force view back to dashboard on new generation
+            st.session_state['current_page'] = "Interactive Dashboard" 
 
-# 6. Page Routing
+# 6. Page Routing based on Button Clicks
 if 'network_data' in st.session_state:
     df = st.session_state['network_data']
 
-    if page == "Interactive Dashboard":
+    if st.session_state['current_page'] == "Interactive Dashboard":
         col1, col2 = st.columns([3, 1]) 
         
         with col1:
@@ -87,18 +94,13 @@ if 'network_data' in st.session_state:
                     relation = str(row.get('Relationship', 'Unknown')).strip()
                     
                     if source not in ["Unknown", "None", ""] and target not in ["Unknown", "None", ""]:
-                        # Add Suspect Node (Neon Pink/Red)
                         G.add_node(source, title=source, label=source, color="#FF3366")
-                        # Add Target Node (Neon Cyan)
                         G.add_node(target, title=target, label=target, color="#00E6CC")
-                        # Add Edge
                         G.add_edge(source, target, label=relation)
                 
-                # Match PyVis background to the true black Streamlit background
                 net = Network(height="700px", width="100%", bgcolor="#050505", font_color="white", directed=True)
                 net.from_nx(G)
                 
-                # Graph styling: Massive physics adjustments for wider node spacing
                 net.set_options("""
                 var options = {
                   "nodes": {
@@ -157,8 +159,8 @@ if 'network_data' in st.session_state:
                 top_suspects = df[~df['Suspect'].isin(['None', 'Unknown', ''])].copy()
                 st.dataframe(top_suspects['Suspect'].value_counts().head(5), use_container_width=True)
 
-    elif page == "Raw Data Details":
-        st.subheader("🗄️ Extracted Investigation Data")
+    elif st.session_state['current_page'] == "Raw Data Details":
+        st.subheader("Extracted Investigation Data")
         st.markdown("Review the structured connections extracted via Pandas and spaCy.")
         st.dataframe(df, use_container_width=True, height=600)
 
