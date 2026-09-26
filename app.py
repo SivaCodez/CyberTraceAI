@@ -27,7 +27,6 @@ st.markdown("""
            [data-testid="stSidebar"] {
                background-color: #111111;
            }
-           /* Custom styling for AI insight boxes */
            .ai-insight-box {
                background-color: #1a1c23;
                border-left: 4px solid #00E6CC;
@@ -101,9 +100,11 @@ if 'network_data' in st.session_state:
         with col1:
             if not df.empty:
                 G = nx.Graph()
-                base_colors = {}
                 
-                # Step 1: Build edges and assign base colors
+                # Create a list of all identified "Suspects" to help with coloring later
+                suspects_set = set(df['Suspect'].dropna().astype(str).str.strip())
+                
+                # Step 1: Build edges
                 for index, row in df.iterrows():
                     source = str(row.get('Suspect', 'Unknown')).strip()
                     target = str(row.get('Target', 'Unknown')).strip()
@@ -111,15 +112,13 @@ if 'network_data' in st.session_state:
                     
                     if source not in ["Unknown", "None", ""] and target not in ["Unknown", "None", ""]:
                         G.add_edge(source, target, label=relation)
-                        if source not in base_colors:
-                            base_colors[source] = "#FF3366" 
-                        if target not in base_colors:
-                            base_colors[target] = "#00E6CC" 
                 
-                # Step 2: Calculate stats and find the Leader
+                # Step 2: Calculate distinct network math
                 if len(G.nodes) > 0:
                     degrees = dict(G.degree())
-                    centrality = nx.degree_centrality(G)
+                    # Use Betweenness for the Leader (who acts as a bridge between groups)
+                    centrality = nx.betweenness_centrality(G) 
+                    
                     leader_node = max(centrality, key=centrality.get)
                     most_connected_node = max(degrees, key=degrees.get)
                 else:
@@ -128,14 +127,20 @@ if 'network_data' in st.session_state:
                     leader_node = None
                     most_connected_node = None
 
-                # Step 3: Apply tooltips and dynamic coloring
+                # Step 3: Apply STRICT colors and tooltips
                 for node in G.nodes():
                     conns = degrees.get(node, 0)
-                    score = round(centrality.get(node, 0), 2)
+                    score = round(centrality.get(node, 0), 4) # Showing 4 decimals for precision
                     
-                    hover_text = f"{node}\nConnections: {conns}\nRisk Score: {score}"
+                    hover_text = f"{node}\nConnections: {conns}\nCentrality Score: {score}"
                     
-                    node_color = "#FFD700" if node == leader_node else base_colors.get(node, "#FFFFFF")
+                    # Strictly define colors
+                    if node == leader_node:
+                        node_color = "#FFD700"  # Yellow for Leader ONLY
+                    elif node in suspects_set:
+                        node_color = "#FF3366"  # Pink for normal Suspects
+                    else:
+                        node_color = "#00E6CC"  # Cyan for Targets/Locations
                     
                     G.nodes[node]['title'] = hover_text
                     G.nodes[node]['label'] = node
@@ -188,7 +193,6 @@ if 'network_data' in st.session_state:
                 top_suspects = df[~df['Suspect'].isin(['None', 'Unknown', ''])].copy()
                 st.dataframe(top_suspects['Suspect'].value_counts().head(5), use_container_width=True)
                 
-                # --- NEW: AI Insights Section ---
                 st.divider()
                 st.markdown("### 🤖 AI Insights")
                 if leader_node:
@@ -211,7 +215,6 @@ if 'network_data' in st.session_state:
         st.subheader("🗄️ Extracted Investigation Data")
         st.markdown("Review the structured connections extracted via Pandas and spaCy.")
         
-        # --- NEW: Styled DataFrame with Colors ---
         def style_relationships(val):
             val_str = str(val).upper()
             if 'CALLED' in val_str or 'COMMUNICATED' in val_str:
@@ -222,11 +225,9 @@ if 'network_data' in st.session_state:
                 return 'color: #FFD700; font-weight: bold;'
             return 'color: #A0AEC0;'
 
-        # Apply the styling map
         try:
             styled_df = df.style.map(style_relationships, subset=['Relationship'])
         except AttributeError:
-            # Fallback for older pandas versions
             styled_df = df.style.applymap(style_relationships, subset=['Relationship'])
             
         st.dataframe(styled_df, use_container_width=True, height=600, hide_index=True)
