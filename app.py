@@ -14,7 +14,7 @@ st.set_page_config(layout="wide", page_title="CyberTrace AI", initial_sidebar_st
 if 'current_page' not in st.session_state:
     st.session_state['current_page'] = "Interactive Dashboard"
 
-# 2. Custom CSS for true-black background and layout padding
+# 2. Custom CSS
 st.markdown("""
     <style>
            .block-container {
@@ -30,7 +30,7 @@ st.markdown("""
     </style>
     """, unsafe_allow_html=True)
 
-# 3. Main Header (Top Left)
+# 3. Main Header
 st.markdown("""
     <h1 style='text-align: left; font-size: 2.5em; font-weight: 900; margin-bottom: 10px; margin-top: 0px;'>
         <span style='color: #00E6CC;'>Cyber</span><span style='color: #FF3366;'>Trace</span> <span style='color: #FFFFFF;'>AI</span>
@@ -38,7 +38,7 @@ st.markdown("""
     <hr style='border: 1px solid #333; margin-top: 0px; margin-bottom: 25px;'>
 """, unsafe_allow_html=True)
 
-# 4. Sidebar: Navigation (Using Buttons)
+# 4. Sidebar: Navigation
 st.sidebar.header("Navigation")
 
 if st.sidebar.button("Interactive Dashboard", use_container_width=True):
@@ -54,7 +54,7 @@ csv_file = st.sidebar.file_uploader("Upload Structured Data (CSV)", type=["csv"]
 txt_file = st.sidebar.file_uploader("Upload Unstructured Reports (TXT)", type=["txt"])
 analyze_btn = st.sidebar.button("Generate Network", type="primary", use_container_width=True)
 
-# 5. Handle Data Processing and Session State
+# 5. Handle Data Processing
 if analyze_btn:
     if csv_file is None and txt_file is None:
         st.sidebar.warning("Please upload at least one file (CSV or TXT).")
@@ -86,33 +86,49 @@ if 'network_data' in st.session_state:
         with col1:
             if not df.empty:
                 G = nx.Graph()
+                base_colors = {}
                 
-                # Step 1: Build basic nodes and edges
+                # Step 1: Build edges and assign base colors
                 for index, row in df.iterrows():
                     source = str(row.get('Suspect', 'Unknown')).strip()
                     target = str(row.get('Target', 'Unknown')).strip()
                     relation = str(row.get('Relationship', 'Unknown')).strip()
                     
                     if source not in ["Unknown", "None", ""] and target not in ["Unknown", "None", ""]:
-                        G.add_node(source, label=source, color="#FF3366")
-                        G.add_node(target, label=target, color="#00E6CC")
                         G.add_edge(source, target, label=relation)
+                        if source not in base_colors:
+                            base_colors[source] = "#FF3366" # Default Suspect (Pink)
+                        if target not in base_colors:
+                            base_colors[target] = "#00E6CC" # Default Target (Cyan)
                 
-                # Step 2: Calculate Network Stats for Hover Tooltips
-                degrees = dict(G.degree())
-                centrality = nx.degree_centrality(G)
-                
+                # Step 2: Calculate stats and find the Leader
+                if len(G.nodes) > 0:
+                    degrees = dict(G.degree())
+                    centrality = nx.degree_centrality(G)
+                    leader_node = max(centrality, key=centrality.get)
+                else:
+                    degrees = {}
+                    centrality = {}
+                    leader_node = None
+
+                # Step 3: Apply tooltips and dynamic coloring
                 for node in G.nodes():
-                    conns = degrees[node]
-                    score = round(centrality[node], 2)
-                    # PyVis 'title' accepts HTML for rich hover states
-                    hover_html = f"<b>{node}</b><br>Connections: {conns}<br>Risk Score: {score}"
-                    G.nodes[node]['title'] = hover_html
+                    conns = degrees.get(node, 0)
+                    score = round(centrality.get(node, 0), 2)
+                    
+                    # Use \n instead of HTML for proper PyVis tooltip formatting
+                    hover_text = f"{node}\nConnections: {conns}\nRisk Score: {score}"
+                    
+                    # Apply dark red if it is the leader, otherwise use base color
+                    node_color = "#CC0000" if node == leader_node else base_colors.get(node, "#FFFFFF")
+                    
+                    G.nodes[node]['title'] = hover_text
+                    G.nodes[node]['label'] = node
+                    G.nodes[node]['color'] = node_color
                 
                 net = Network(height="700px", width="100%", bgcolor="#050505", font_color="white", directed=True)
                 net.from_nx(G)
                 
-                # Step 3: Tame the physics for better initial zoom
                 net.set_options("""
                 var options = {
                   "nodes": {
